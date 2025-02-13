@@ -1,3 +1,51 @@
+<script lang="ts" setup>
+useSeoMeta({
+    title: 'Register Page'
+})
+
+import { ref } from 'vue';
+
+const email = ref('');
+const password = ref('');
+const errorMessage = ref('');
+const successMessage = ref('');
+
+function register() {
+  // Basic validation
+  if (!email.value || !password.value) {
+    errorMessage.value = 'Email and password are required.';
+    return;
+  }
+
+  const value = {
+    email: email.value,
+    password: password.value,
+  };
+
+  const newData = new URLSearchParams(value);
+  const nq = newData.toString();
+
+  $fetch('http://localhost:8881/auth/register', {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    method: 'POST',
+    body: nq,
+  })
+  .then(response => {
+    if (response.ok) {
+      successMessage.value = 'Registration successful!';
+      errorMessage.value = '';
+    } else {
+      errorMessage.value = 'Registration failed. Please try again.';
+    }
+  })
+  .catch(error => {
+    errorMessage.value = 'An error occurred: ' + error.message;
+  });
+}
+</script>
+
 <template>
   <div>
     <div class="inline-block md:flex h-full md:h-screen w-full bg-blue-500">
@@ -12,83 +60,37 @@
           30.000+ Users
         </div>
         <div class="md:text-base text-xs">
-          Transfering money is eassier than ever, you can access Zwallet
+          Transfering money is easier than ever, you can access Zwallet
           wherever you are. Desktop, laptop, mobile phone? we cover all of that
           for you!
         </div>
-        <div
-          class=" flex flex-row md:flex-col justify-between md:justify-center w-full items-center gap-3"
-        >
-          <div
-            class="btn border-slate-300 rounded-full  h-10 border py-3.5 px-20 md:px-44 flex items-center"
-          >
-            <FcGoogle />
-            <span class="md:block hidden ">Sign In With Google</span>
-          </div>
-          <div
-            class="btn border-slate-300 rounded-full  h-10 border py-3.5 px-20 md:px-[10.5rem] flex items-center"
-          >
-            <FaFacebook class="text-blue-700" />
-            <span class="md:block hidden ">Sign In With Facebook</span>
-          </div>
-        </div>
-        <div class="flex justify-between items-center gap-5 w-full">
-          <div>
-            <hr class="w-40 md:w-[250px] h-0.5 bg-info" />
-          </div>
-          <div class="text-info">or</div>
-          <div>
-            <hr class="w-40 md:w-[250px] h-0.5 bg-info" />
-          </div>
-        </div>
-        <form @submit="" class="w-full flex flex-col gap-5">
+        <form @submit.prevent="register" class="w-full flex flex-col gap-5"> 
+          <div v-if="errorMessage" class="text-red-500">{{ errorMessage }}</div>
+          <div v-if="successMessage" class="text-green-500">{{ successMessage }}</div>
+
           <label htmlFor="" class="flex flex-col gap-1">
             <div>
               <span class="text-base font-medium">Email</span>
             </div>
-            <div
-              class="input border-info w-full h-11 pl-5 flex items-center gap-3"
-            >
+            <div class="input border-info w-full h-11 pl-5 flex items-center gap-3">
               <MdOutlineMail class="text-info" />
               <input
                 type="text"
                 placeholder="Enter Your Email"
+                v-model="email"
                 class="w-full box-border"
               />
-        </div>
+            </div>
           </label>
           <label htmlFor="" class="flex flex-col gap-1">
             <span class="text-base font-medium">Password</span>
-            <div
-              class="w-full h-11 border-black pl-5 flex items-center justify-between"
-            >
+            <div class="w-full h-11 border-black pl-5 flex items-center justify-between">
               <div class="flex items-center gap-3">
                 <MdOutlineVpnKey class="text-info" />
                 <input
                   type="text"
                   placeholder="Enter Your Password"
-                  class="w-full box-border"
-                />
-              </div>
-              <!-- <div onClick={() => setShow(!isShow)}>
-                    {isShow ? (
-                      <IoEyeOutline class="text-info" />
-                    ) : (
-                      <IoEyeOffSharp class="text-info" />
-                    )}
-                  </div> -->
-            </div>
-          </label>
-          <label htmlFor="" class="flex flex-col gap-1">
-            <span class="text-base font-medium">Confirm Password</span>
-            <div
-              class="w-full h-11 input border-info pl-5 flex items-center justify-between"
-            >
-              <div class="flex items-center gap-3">
-                <MdOutlineVpnKey class="text-info" />
-                <input
-                  type="text"
-                  placeholder="Enter Your Password Again"
+                  v-model="password"
                   class="w-full box-border"
                 />
               </div>

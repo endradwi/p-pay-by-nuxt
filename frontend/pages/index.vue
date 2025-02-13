@@ -1,4 +1,8 @@
-
+<script lang="ts" setup>
+useSeoMeta({
+    title: 'Home Page'
+})
+</script>
 <template>
     <div>
         <Navbar />

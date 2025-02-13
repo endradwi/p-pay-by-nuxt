@@ -1,5 +1,4 @@
 <template>
-  <div>
     <div
       className="flex navbar justify-between bg-blue-500 px-5 md:px-12 lg:px-32 py-4 shadow-md"
     >
@@ -21,5 +20,4 @@
         </NuxtLink>
       </div>
     </div>
-  </div>
 </template>
