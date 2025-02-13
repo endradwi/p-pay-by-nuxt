@@ -18,6 +18,6 @@ services:
     environment:
       - POSTGRES_PASSWORD=1
     volumes:
-      - ./base.sql:/docker-entrypoint-initdb.d/base.sql:ro
+      - ./backend:/docker-entrypoint-initdb.d/base.sql:ro
 volumes:
   images:
