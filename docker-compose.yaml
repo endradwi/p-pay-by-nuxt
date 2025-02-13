@@ -1,35 +1,23 @@
 services:
   backend-app:
     build: ./backend/
-    networks:
-      webservices:
-        ipv4_address: 101.10.11.150
     volumes:
       - images:/app/uploads
     ports:
-      - "8081:8080"
+      - "8881:8881"
+    depends_on:
+      - db
   frontend-app:
-    build: ./PPay/
-    networks:
-      webservices:
-        ipv4_address: 101.10.11.145
+    build: ./frontend/
     ports:
       - "5175:5173"
+    depends_on:
+      - backend-app
   db:
     image: postgres
     environment:
       - POSTGRES_PASSWORD=1
     volumes:
       - ./base.sql:/docker-entrypoint-initdb.d/base.sql:ro
-    networks:
-      webservices:
-        ipv4_address: 101.10.11.100
-networks:
-  webservices:
-    ipam:
-      driver: default
-      config:
-        - subnet: 101.10.0.0/16
-          ip_range: 101.10.11.0/24 
 volumes:
   images:
