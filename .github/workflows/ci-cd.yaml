@@ -28,7 +28,7 @@ jobs:
         run: npm install -g pkg
       - name: Convert Nuxt to binary
         run: |
-          cd nuxt
+          cd frontend
           npx pkg .output/server/index.mjs --targets node18-linux-x64 --output nuxt-binary
       - name: Upload Nuxt Bin
         uses: actions/upload-artifact@v4
