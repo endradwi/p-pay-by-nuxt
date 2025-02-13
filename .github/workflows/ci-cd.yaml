@@ -34,7 +34,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: nuxt-binary
-          path: nuxt/nuxt-binary
+          path: frontend/nuxt-binary
       - name: Install Go
         run: sudo apt-get install golang-go
       - name: Build backend
@@ -45,4 +45,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: backend-binary
-          path: backend/myrybackend
+          path: backend/mybackend
