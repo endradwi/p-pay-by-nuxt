@@ -21,7 +21,7 @@ jobs:
           node-version: 22.2.0
       - name: Install Nuxt dependencies
         run: |
-          cd nuxt
+          cd frontend
           npm install
           npm run build
       - name: Install pkg for binary conversion
@@ -30,7 +30,7 @@ jobs:
         run: |
           cd nuxt
           npx pkg .output/server/index.mjs --targets node18-linux-x64 --output nuxt-binary
-      - name: Upload Nuxt Bina
+      - name: Upload Nuxt Bin
         uses: actions/upload-artifact@v4
         with:
           name: nuxt-binary
