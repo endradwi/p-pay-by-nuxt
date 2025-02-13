@@ -7,15 +7,8 @@ import { ref } from 'vue';
 
 const email = ref('');
 const password = ref('');
-const errorMessage = ref('');
-const successMessage = ref('');
 
 function register() {
-  // Basic validation
-  if (!email.value || !password.value) {
-    errorMessage.value = 'Email and password are required.';
-    return;
-  }
 
   const value = {
     email: email.value,
@@ -32,17 +25,9 @@ function register() {
     method: 'POST',
     body: nq,
   })
-  .then(response => {
-    if (response.ok) {
-      successMessage.value = 'Registration successful!';
-      errorMessage.value = '';
-    } else {
-      errorMessage.value = 'Registration failed. Please try again.';
-    }
+  navigateTo({
+    path: '/login'
   })
-  .catch(error => {
-    errorMessage.value = 'An error occurred: ' + error.message;
-  });
 }
 </script>
 
@@ -65,8 +50,6 @@ function register() {
           for you!
         </div>
         <form @submit.prevent="register" class="w-full flex flex-col gap-5"> 
-          <div v-if="errorMessage" class="text-red-500">{{ errorMessage }}</div>
-          <div v-if="successMessage" class="text-green-500">{{ successMessage }}</div>
 
           <label htmlFor="" class="flex flex-col gap-1">
             <div>

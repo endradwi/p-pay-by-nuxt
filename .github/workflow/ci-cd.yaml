@@ -1,0 +1,48 @@
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
+
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
+        run: ls -R
+      - name: Setup Node.js 22.2.0
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.2.0
+      - name: Install Nuxt dependencies
+        run: |
+          cd nuxt
+          npm install
+          npm run build
+      - name: Install pkg for binary conversion
+        run: npm install -g pkg
+      - name: Convert Nuxt to binary
+        run: |
+          cd nuxt
+          npx pkg .output/server/index.mjs --targets node18-linux-x64 --output nuxt-binary
+      - name: Upload Nuxt Bina
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuxt-binary
+          path: nuxt/nuxt-binary
+      - name: Install Go
+        run: sudo apt-get install golang-go
+      - name: Build backend
+        run: |
+          cd backend
+          go build -o mybackend main.go
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-binary
+          path: backend/myrybackend

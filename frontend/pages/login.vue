@@ -2,6 +2,33 @@
 useSeoMeta({
     title: 'Login Page'
 })
+
+import { ref } from 'vue';
+
+const email = ref('');
+const password = ref('');
+
+function login() {
+
+  const value = {
+    email: email.value,
+    password: password.value,
+  };
+
+  const newData = new URLSearchParams(value);
+  const nq = newData.toString();
+
+  $fetch('http://localhost:8881/auth/login', {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    method: 'POST',
+    body: nq,
+  })
+  navigateTo({
+    path: '/',
+  })
+}
 </script>
 <template>
   <div class="md:flex block h-screen bg-blue-500">
@@ -48,7 +75,7 @@ useSeoMeta({
           <hr class="md:w-full h-0.5 bg-black" />
         </div>
       </div>
-      <form
+      <form @submit.prevent="login"
       class="w-full flex flex-col gap-2"
       >
       <label htmlFor="" class="flex flex-col gap-1">
@@ -62,8 +89,10 @@ useSeoMeta({
           <input
             type="text"
             placeholder="Enter Your Email"
+            v-model="email"
             class="w-full box-border"
           />
+
         </div>
       </label>
       <label  class="flex flex-col gap-1">
@@ -74,10 +103,12 @@ useSeoMeta({
         <div class="flex items-center gap-3">
           <MdOutlineVpnKey class="text-black" />
           <input
-            type="password"
+            type="text"
             placeholder="Enter Your Password"
+            v-model="password"
             class="w-full box-border"
           />
+
         </div>
         <!-- <div onClick={() => setShow(!isShow)}> -->
         <!-- {isShow ? ( -->
@@ -97,7 +128,7 @@ useSeoMeta({
     <div class="w-full flex justify-center gap-2">
       Not Have An Account?
       <span class="link link-blue-500">
-        <Link to="/register">Register</Link>
+        <NuxtLink to="/register">Register</NuxtLink>
       </span>
     </div>
     </form>
