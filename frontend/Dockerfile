@@ -7,7 +7,9 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
 
-COPY . .
+COPY . . 
+# Ensure assets are included in the build context
+
 
 RUN npm run build
 

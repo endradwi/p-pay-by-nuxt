@@ -10,7 +10,7 @@ services:
   frontend-app:
     build: ./frontend/
     ports:
-      - "5175:5173"
+      - "3000:3000"
     depends_on:
       - backend-app
   db:
